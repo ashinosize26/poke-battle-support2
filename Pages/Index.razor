@@ -1,9 +1,202 @@
 ﻿@page "/"
+@inject HttpClient Http
+@inject BattleModel Battle
 
-<PageTitle>Index</PageTitle>
+<PageTitle>ポケモンバトルサポート</PageTitle>
+@if (pokeNames == null)
+{
+    <MudText>Loading...</MudText>
+}
+else
+{
+    @* ポケモン選択画面 *@
+    <MudGrid Class="px-16 py-10">
+        @* 自分 *@
+        <MudItem xs="12" sm="6">
+            <MudText Typo="Typo.h5" Class="mb-4">自分のパーティ</MudText>
+            <MudGrid>
+                @foreach (var poke in Battle.MyParty)
+                {
+                    <MudItem xs="12" sm="6">
+                        <MudAutocomplete T="string" Label="ポケモン" Value="@poke.Name" ValueChanged="@( async(value) => await HandlePokeSelected(value, poke))" SearchFunc="@( async(value) => HandlePokeSearchFunc(value))" ResetValueOnEmptyText="true" CoerceText="false" CoerceValue="false" />
+                    </MudItem>
+                    <MudItem xs="12" sm="6">
+                            <PokeImageView PokeNo="@poke.No" Width="50" Height="50" />
+                            <PokeTypeView PokeType="@poke.Type1" ShowSample="@string.IsNullOrEmpty(poke.Name)" />
+                            <PokeTypeView PokeType="@poke.Type2" ShowSample="@string.IsNullOrEmpty(poke.Name)" />
+                    </MudItem>
+                    <MudItem xs="12" sm="12">
+                        <MudRadioGroup T="Common.SpeedRank" SelectedOption="@poke.SpeedRank" SelectedOptionChanged="@(value => HandleSpeedRankChanged(value, poke))">
+                            <MudRadio Option="@(Common.SpeedRank.Fastest)" Dense="true" Color="Color.Primary">最速</MudRadio>
+                            <MudRadio Option="@(Common.SpeedRank.Fast)" Dense="true" Color="Color.Primary">準速</MudRadio>
+                            <MudRadio Option="@(Common.SpeedRank.Default)" Dense="true" Color="Color.Primary">無振</MudRadio>
+                        </MudRadioGroup>
+                    </MudItem>
+                    <MudItem xs="12" sm="12">
+                        <MudCheckBox T="bool" Checked="@(poke.BattleItem == Common.BattleItem.ChoiceScarf ? true : false)" Label="こだわりスカーフ" Color="Color.Warning" Dense="true" CheckedChanged="@(value => HandleScarfChanged(value, poke))"></MudCheckBox>
+                    </MudItem>
+                }
+            </MudGrid>
+            <MudButton Class="mt-10" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => HandleClearClicked(Battle.MyParty))">パーティのクリア</MudButton>
+        </MudItem>
+        @* 相手 *@
+        <MudItem xs="12" sm="6">
+            <MudText Typo="Typo.h5" Class="mb-4">相手のパーティ</MudText>
+            <MudGrid>
+                @foreach (var poke in Battle.YourParty)
+                {
+                    <MudItem xs="12" sm="6">
+                        <MudAutocomplete T="string" Label="ポケモン" Value="@poke.Name" ValueChanged="@( async(value) => await HandlePokeSelected(value, poke))" SearchFunc="@( async(value) => HandlePokeSearchFunc(value))" ResetValueOnEmptyText="true" CoerceText="false" CoerceValue="false" />
+                    </MudItem>
+                    <MudItem xs="12" sm="6">
+                        <PokeImageView PokeNo="@poke.No" Width="50" Height="50" />
+                        <PokeTypeView PokeType="@poke.Type1" ShowSample="@string.IsNullOrEmpty(poke.Name)" />
+                        <PokeTypeView PokeType="@poke.Type2" ShowSample="@string.IsNullOrEmpty(poke.Name)" />
+                    </MudItem>
+                }
+            </MudGrid>
+            <MudButton Class="mt-10" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => HandleClearClicked(Battle.YourParty))">パーティのクリア</MudButton>
+        </MudItem>
+    </MudGrid>
+}
 
-<h1>Hello, world!</h1>
+@code {
+    /// <summary>
+    /// 全てのポケモンの名前のリスト
+    /// </summary>
+    private List<string> pokeNames = new();
 
-Welcome to your new app.
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <returns></returns>
+    protected override async Task OnInitializedAsync()
+    {
+        // 基本情報を取得
+        PokeModel[] basicInfoList = await Http.GetFromJsonAsync<PokeModel[]>("poke-data/name_type.json") ?? Array.Empty<PokeModel>();
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+        // 名前のリストを作成
+        foreach (var basicInfo in basicInfoList)
+        {
+            pokeNames.Add(basicInfo.Name);
+        }
+    }
+
+    private void ClearPoke(PokeModel poke)
+    {
+        poke.No = 0;
+        poke.Name = string.Empty;
+        poke.Type1 = string.Empty;
+        poke.Type2 = string.Empty;
+        poke.H = 0;
+        poke.A = 0;
+        poke.B = 0;
+        poke.C = 0;
+        poke.D = 0;
+        poke.S = 0;
+        poke.Total = 0;
+        poke.SpeedRank = Common.SpeedRank.Unknown;
+        poke.BattleItem = Common.BattleItem.None;
+    }
+
+    /// <summary>
+    /// ポケコンボボックスのリスト表示をするためのコールバック用
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    private IEnumerable<string> HandlePokeSearchFunc(string value)
+    {
+        // テキストがなければ一覧を全て返す。あれば一致するものを抽出して返す。
+        if (string.IsNullOrEmpty(value))
+        {
+            return pokeNames;
+        }
+        else
+        {
+            return pokeNames.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+        }
+    }
+
+    /// <summary>
+    /// ポケコンボボックスで選択されたときのイベントコールバック用
+    /// </summary>
+    /// <param name="selectedValue"></param>
+    /// <param name="pokeInfo"></param>
+    /// <returns></returns>
+    private async Task HandlePokeSelected(string selectedValue, PokeModel poke)
+    {
+        // 選択解除
+        if (string.IsNullOrEmpty(selectedValue))
+        {
+            // 初期化
+            ClearPoke(poke);
+            return;
+        }
+
+        // 選択された名前をセット
+        poke.Name = selectedValue;
+
+        // 基本情報を取得
+        PokeModel[] basicInfoList = await Http.GetFromJsonAsync<PokeModel[]>("poke-data/name_type.json") ?? Array.Empty<PokeModel>();
+
+        // 基本情報をセット
+        PokeModel basicInfo = basicInfoList.Single(x => x.Name == selectedValue);
+        poke.No = basicInfo.No;
+        poke.Type1 = basicInfo.Type1;
+        poke.Type2 = basicInfo.Type2;
+
+        // 種族値を取得
+        PokeModel[] baseStatList = await Http.GetFromJsonAsync<PokeModel[]>("poke-data/base_stat.json") ?? Array.Empty<PokeModel>();
+
+        // 種族値をセット
+        PokeModel baseStat = basicInfoList.Single(x => x.Name == selectedValue);
+        poke.H = baseStat.H;
+        poke.A = baseStat.A;
+        poke.B = baseStat.B;
+        poke.C = baseStat.C;
+        poke.D = baseStat.D;
+        poke.S = baseStat.S;
+        poke.Total = baseStat.Total;
+    }
+
+    ///  <summary>
+    /// S実数値のランクラジオボタンが変わったときのコールバック用
+    /// </summary>
+    private void HandleSpeedRankChanged(Common.SpeedRank selectedValue, PokeModel poke)
+    {
+        // 選択された値をセット
+        poke.SpeedRank = selectedValue;
+    }
+
+    /// <summary>
+    /// こだわりスカーフチェックボックスのコールバック用
+    /// </summary>
+    /// <param name="selectedValue"></param>
+    /// <param name="pokeInfo"></param>
+    /// <returns></returns>
+    private void HandleScarfChanged(bool checkedScarf, PokeModel poke)
+    {
+        // チェック状態をセット
+        if (checkedScarf)
+        {
+            poke.BattleItem = Common.BattleItem.ChoiceScarf;
+        }
+        else
+        {
+            poke.BattleItem = Common.BattleItem.None;
+        }
+    }
+
+    /// <summary>
+    /// パーティクリアボタンが押された時のコールバック用
+    /// </summary>
+    /// <returns></returns>
+    private void HandleClearClicked(PokeModel[] party)
+    {
+        // パーティ情報をクリア
+        foreach (var poke in party)
+        {
+            ClearPoke(poke);
+        }
+    }
+}
