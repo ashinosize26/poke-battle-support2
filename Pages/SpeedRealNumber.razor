@@ -5,43 +5,39 @@
 <MudTable Items="@Elements" Hover="true" Breakpoint="Breakpoint.None" Dense="true" Class="mx-4 mt-8" Striped="true" Bordered="true">
     <HeaderContent>
         <MudTh></MudTh>
-        <MudTh></MudTh>
-        <MudTh>持ち物</MudTh>
         <MudTh>最速</MudTh>
         <MudTh>準速</MudTh>
         <MudTh>無振</MudTh>
         <MudTh>下降</MudTh>
         <MudTh>最遅</MudTh>
+        <MudTh>持ち物</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="PokemonImage">
             <PokeImageView PokeNo="@context.No" Width="42" Height="42" />
         </MudTd>
-        <MudTd>
-            <MudText Typo="Typo.body1">@context.Name</MudText>
+        <MudTd DataLabel="Fastest">
+            <MudText Typo="Typo.body1" Color="@(context.SpeedRank == Common.SpeedRank.Fastest ? Color.Secondary : Color.Default)">@(context.FastestSpeed + (context.ChoiceScarf ? $" ({Math.Floor(context.FastestSpeed * 1.5)})" : ""))</MudText>
+        </MudTd>
+        <MudTd DataLabel="Fast">
+            <MudText Typo="Typo.body1" Color="@(context.SpeedRank == Common.SpeedRank.Fast ? Color.Secondary : Color.Default)">@(context.FastSpeed + (context.ChoiceScarf ? $" ({Math.Floor(context.FastSpeed * 1.5)})" : ""))</MudText>
+        </MudTd>
+        <MudTd DataLabel="Default">
+            <MudText Typo="Typo.body1" Color="@(context.SpeedRank == Common.SpeedRank.Default ? Color.Secondary : Color.Default)">@(context.DefaultSpeed + (context.ChoiceScarf ? $"({Math.Floor(context.DefaultSpeed * 1.5)})" : ""))</MudText>
+        </MudTd>
+        <MudTd DataLabel="Slow">
+            <MudText Typo="Typo.body1">@context.SlowSpeed</MudText>
+        </MudTd>
+        <MudTd DataLabel="Slowest">
+            <MudText Typo="Typo.body1">@context.SlowestSpeed</MudText>
         </MudTd>
         <MudTd>
             <MudText Typo="Typo.h5">@(context.ChoiceScarf == true ? "スカーフ" : "-")</MudText>
-            </MudTd>
-            <MudTd DataLabel="Fastest">
-                <MudText Typo="Typo.body1" Color="@(context.SpeedRank == Common.SpeedRank.Fastest ? Color.Secondary : Color.Default)">@(context.FastestSpeed + (context.ChoiceScarf ? $" ({Math.Floor(context.FastestSpeed * 1.5)})" : ""))</MudText>
-            </MudTd>
-            <MudTd DataLabel="Fast">
-                <MudText Typo="Typo.body1" Color="@(context.SpeedRank == Common.SpeedRank.Fast ? Color.Secondary : Color.Default)">@(context.FastSpeed + (context.ChoiceScarf ? $" ({Math.Floor(context.FastSpeed * 1.5)})" : ""))</MudText>
-            </MudTd>
-            <MudTd DataLabel="Default">
-                <MudText Typo="Typo.body1" Color="@(context.SpeedRank == Common.SpeedRank.Default ? Color.Secondary : Color.Default)">@(context.DefaultSpeed + (context.ChoiceScarf ? $"({Math.Floor(context.DefaultSpeed * 1.5)})" : ""))</MudText>
-            </MudTd>
-            <MudTd DataLabel="Slow">
-                <MudText Typo="Typo.body1">@context.SlowSpeed</MudText>
-            </MudTd>
-            <MudTd DataLabel="Slowest">
-                <MudText Typo="Typo.body1">@context.SlowestSpeed</MudText>
-            </MudTd>
-        </RowTemplate>
-    </MudTable>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
 
-    @code {
+@code {
     /// <summary>
     /// テーブルデータ
     /// </summary>
