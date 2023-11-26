@@ -3,8 +3,8 @@
 
 <PageTitle>種族値</PageTitle>
 @* 自分 *@
-<MudText Typo="Typo.h5" Class="px-4 pt-8 pb-4">自分のパーティ</MudText>
-<MudGrid Class="px-4">
+<MudText Typo="Typo.h5" Class="mx-4 mt-8 mb-4">自分のパーティ</MudText>
+<MudGrid Class="mx-4">
     @foreach (var poke in Battle.MyParty)
     {
         <MudItem xs="4">
@@ -13,8 +13,8 @@
     }
 </MudGrid>
 @* 相手 *@
-<MudText Typo="Typo.h5" Class="px-4 pt-8 pb-4">相手のパーティ</MudText>
-<MudGrid Class="px-4">
+<MudText Typo="Typo.h5" Class="mx-4 mt-8 mb-4">相手のパーティ</MudText>
+<MudGrid Class="mx-4">
     @foreach (var poke in Battle.YourParty)
     {
         <MudItem xs="4">
