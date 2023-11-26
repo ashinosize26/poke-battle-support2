@@ -21,4 +21,8 @@
     <PackageReference Include="PublishSPAforGitHubPages.Build" Version="2.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="docs\" />
+  </ItemGroup>
+
 </Project>
