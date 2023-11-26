@@ -23,15 +23,15 @@ else
                 <PokeTypeView PokeType="@poke.Type1" ShowSample="@string.IsNullOrEmpty(poke.Name)" />
                 <PokeTypeView PokeType="@poke.Type2" ShowSample="@string.IsNullOrEmpty(poke.Name)" />
             </MudItem>
-            <MudItem xs="6">
+            <MudItem xs="8">
                 <MudRadioGroup T="Common.SpeedRank" SelectedOption="@poke.SpeedRank" SelectedOptionChanged="@(value => HandleSpeedRankChanged(value, poke))">
                     <MudRadio Option="@(Common.SpeedRank.Fastest)" Dense="true" Color="Color.Primary">最速</MudRadio>
                     <MudRadio Option="@(Common.SpeedRank.Fast)" Dense="true" Color="Color.Primary">準速</MudRadio>
                     <MudRadio Option="@(Common.SpeedRank.Default)" Dense="true" Color="Color.Primary">無振</MudRadio>
                 </MudRadioGroup>
             </MudItem>
-            <MudItem xs="6">
-                <MudCheckBox T="bool" Checked="@(poke.BattleItem == Common.BattleItem.ChoiceScarf ? true : false)" Label="こだわりスカーフ" Color="Color.Warning" Dense="true" CheckedChanged="@(value => HandleScarfChanged(value, poke))"></MudCheckBox>
+            <MudItem xs="4">
+                <MudCheckBox T="bool" Checked="@(poke.BattleItem == Common.BattleItem.ChoiceScarf ? true : false)" Label="スカーフ" Color="Color.Warning" Dense="true" CheckedChanged="@(value => HandleScarfChanged(value, poke))"></MudCheckBox>
             </MudItem>
         }
     </MudGrid>
@@ -142,14 +142,28 @@ else
         PokeModel[] baseStatList = await Http.GetFromJsonAsync<PokeModel[]>("poke-data/base_stat.json") ?? Array.Empty<PokeModel>();
 
         // 種族値をセット
-        PokeModel baseStat = baseStatList.Single(x => x.Name == selectedValue);
-        poke.H = baseStat.H;
-        poke.A = baseStat.A;
-        poke.B = baseStat.B;
-        poke.C = baseStat.C;
-        poke.D = baseStat.D;
-        poke.S = baseStat.S;
-        poke.Total = baseStat.Total;
+        try
+        {
+            PokeModel baseStat = baseStatList.Single(x => x.Name == selectedValue);
+            poke.H = baseStat.H;
+            poke.A = baseStat.A;
+            poke.B = baseStat.B;
+            poke.C = baseStat.C;
+            poke.D = baseStat.D;
+            poke.S = baseStat.S;
+            poke.Total = baseStat.Total;
+        }
+        catch (Exception)
+        {
+            // 種族値がない場合（Singleでただ1つだけ取得できない場合）は例外発生
+            poke.H = 0;
+            poke.A = 0;
+            poke.B = 0;
+            poke.C = 0;
+            poke.D = 0;
+            poke.S = 0;
+            poke.Total = 0;
+        }
     }
 
     ///  <summary>
