@@ -1,0 +1,60 @@
+﻿<MudPaper Class="pl-2 pr-3 py-4">
+    <MudStack Spacing="2">
+        <PokeImageView PokeNo="@No" Height="50" Width="50" />
+        <MudStack Row="true" Spacing="3">
+            <MudText Typo="Typo.body1" Style="width: 24px;">H</MudText>
+            <MudSlider Size="Size.Small" Value="@H" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
+            <MudText Typo="Typo.body1" Align="Align.Right" Style="width: 40px;">@H</MudText>
+        </MudStack>
+        <MudStack Row="true" Spacing="3">
+            <MudText Typo="Typo.body1" Style="width: 24px;">A</MudText>
+            <MudSlider Size="Size.Small" Value="@A" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
+            <MudText Typo="Typo.body1" Align="Align.Right" Style="width: 40px;">@A</MudText>
+        </MudStack>
+        <MudStack Row="true" Spacing="3">
+            <MudText Typo="Typo.body1" Style="width: 24px;">B</MudText>
+            <MudSlider Size="Size.Small" Value="@B" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
+            <MudText Typo="Typo.body1" Align="Align.Right" Style="width: 40px;">@B</MudText>
+        </MudStack>
+        <MudStack Row="true" Spacing="3">
+            <MudText Typo="Typo.body1" Style="width: 24px;">C</MudText>
+            <MudSlider Size="Size.Small" Value="@C" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
+            <MudText Typo="Typo.body1" Align="Align.Right" Style="width: 40px;">@C</MudText>
+        </MudStack>
+        <MudStack Row="true" Spacing="3">
+            <MudText Typo="Typo.body1" Style="width: 24px;">D</MudText>
+            <MudSlider Size="Size.Small" Value="@D" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
+            <MudText Typo="Typo.body1" Align="Align.Right" Style="width: 40px;">@D</MudText>
+        </MudStack>
+        <MudStack Row="true" Spacing="3">
+            <MudText Typo="Typo.body1" Style="width: 24px;">S</MudText>
+            <MudSlider Size="Size.Small" Value="@S" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
+            <MudText Typo="Typo.body1" Align="Align.Right" Style="width: 40px;">@S</MudText>
+        </MudStack>
+    </MudStack>
+</MudPaper>
+@code{
+    [Parameter]
+    public int No { get; set; }
+
+    [Parameter]
+    public int H { get; set; }
+
+    [Parameter]
+    public int A { get; set; }
+
+    [Parameter]
+    public int B { get; set; }
+
+    [Parameter]
+    public int C { get; set; }
+
+    [Parameter]
+    public int D { get; set; }
+
+    [Parameter]
+    public int S { get; set; }
+
+    [Parameter]
+    public Color BaseStatBarColor { get; set; }
+}

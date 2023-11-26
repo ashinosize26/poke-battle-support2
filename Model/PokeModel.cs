@@ -15,7 +15,7 @@ public class PokeModel
     /// <summary>
     /// No
     /// </summary>
-    public long No { get; set; }
+    public int No { get; set; }
 
     /// <summary>
     /// タイプ１
@@ -30,37 +30,37 @@ public class PokeModel
     /// <summary>
     /// HP種族値
     /// </summary>
-    public long H { get; set; }
+    public int H { get; set; }
 
     /// <summary>
     /// 攻撃種族値
     /// </summary>
-    public long A { get; set; }
+    public int A { get; set; }
 
     /// <summary>
     /// 防御種族値
     /// </summary>
-    public long B { get; set; }
+    public int B { get; set; }
 
     /// <summary>
     /// 特攻種族値
     /// </summary>
-    public long C { get; set; }
+    public int C { get; set; }
 
     /// <summary>
     /// 特防種族値
     /// </summary>
-    public long D { get; set; }
+    public int D { get; set; }
 
     /// <summary>
     /// 素早さ種族値
     /// </summary>
-    public long S { get; set; }
+    public int S { get; set; }
 
     /// <summary>
     /// 合計種族値
     /// </summary>
-    public long Total { get; set; }
+    public int Total { get; set; }
 
     /// <summary>
     /// 素早さランク

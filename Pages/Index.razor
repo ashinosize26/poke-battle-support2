@@ -153,7 +153,7 @@ else
         PokeModel[] baseStatList = await Http.GetFromJsonAsync<PokeModel[]>("poke-data/base_stat.json") ?? Array.Empty<PokeModel>();
 
         // 種族値をセット
-        PokeModel baseStat = basicInfoList.Single(x => x.Name == selectedValue);
+        PokeModel baseStat = baseStatList.Single(x => x.Name == selectedValue);
         poke.H = baseStat.H;
         poke.A = baseStat.A;
         poke.B = baseStat.B;
