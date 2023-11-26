@@ -3,32 +3,25 @@
 
 @* 種族値 *@
 <PageTitle>種族値</PageTitle>
-<MudGrid Class="px-16 py-10">
-    @* 自分 *@
-    <MudItem xs="12" sm="6">
-        <MudText Typo="Typo.h5" Class="mb-4">自分のパーティ</MudText>
-        <MudGrid>
-            @foreach (var poke in Battle.MyParty)
-            {
-                <MudItem xs="12" sm="6">
-                    <PokeBaseStatsView No="@poke.No" H="@poke.H" A="@poke.A" B="@poke.B" C="@poke.C" D="@poke.D" S="@poke.S" BaseStatBarColor="@Color.Info" />
-                </MudItem>
-            }
-        </MudGrid>
-    </MudItem>
-    @* 相手 *@
-    <MudItem xs="12" sm="6">
-        <MudText Typo="Typo.h5" Class="mb-4">相手のパーティ</MudText>
-        <MudGrid>
-            @foreach (var poke in Battle.YourParty)
-            {
-                <MudItem xs="12" sm="6">
-                    <PokeBaseStatsView No="@poke.No" H="@poke.H" A="@poke.A" B="@poke.B" C="@poke.C" D="@poke.D" S="@poke.S" BaseStatBarColor="@Color.Secondary" />
-                </MudItem>
-            }
-        </MudGrid>
-    </MudItem>
+@* 自分 *@
+<MudText Typo="Typo.h5" Class="px-4 py-10">自分のパーティ</MudText>
+<MudGrid Class="px-4">
+    @foreach (var poke in Battle.MyParty)
+    {
+        <MudItem xs="4">
+            <PokeBaseStatsView No="@poke.No" H="@poke.H" A="@poke.A" B="@poke.B" C="@poke.C" D="@poke.D" S="@poke.S" BaseStatBarColor="@Color.Info" />
+        </MudItem>
+    }
 </MudGrid>
-
+@* 相手 *@
+<MudText Typo="Typo.h5" Class="px-4 py-10">相手のパーティ</MudText>
+<MudGrid Class="px-4">
+    @foreach (var poke in Battle.YourParty)
+    {
+        <MudItem xs="4">
+            <PokeBaseStatsView No="@poke.No" H="@poke.H" A="@poke.A" B="@poke.B" C="@poke.C" D="@poke.D" S="@poke.S" BaseStatBarColor="@Color.Secondary" />
+        </MudItem>
+    }
+</MudGrid>
 @code{
 }
