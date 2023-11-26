@@ -1,10 +1,9 @@
 ﻿@page "/basestats"
 @inject BattleModel Battle
 
-@* 種族値 *@
 <PageTitle>種族値</PageTitle>
 @* 自分 *@
-<MudText Typo="Typo.h5" Class="px-4 py-10">自分のパーティ</MudText>
+<MudText Typo="Typo.h5" Class="px-4 pt-8 pb-4">自分のパーティ</MudText>
 <MudGrid Class="px-4">
     @foreach (var poke in Battle.MyParty)
     {
@@ -14,7 +13,7 @@
     }
 </MudGrid>
 @* 相手 *@
-<MudText Typo="Typo.h5" Class="px-4 py-10">相手のパーティ</MudText>
+<MudText Typo="Typo.h5" Class="px-4 pt-8 pb-4">相手のパーティ</MudText>
 <MudGrid Class="px-4">
     @foreach (var poke in Battle.YourParty)
     {
