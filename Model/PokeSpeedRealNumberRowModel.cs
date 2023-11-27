@@ -5,10 +5,6 @@ public class PokeSpeedRealNumberRowModel
 {
     public long No { get; set; }
 
-    public string Name { get; set; } = string.Empty;
-
-    public bool ChoiceScarf { get; set; } = false;
-
     public int FastestSpeed { get; set; }
 
     public int FastSpeed { get; set; }
