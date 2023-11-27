@@ -9,48 +9,54 @@
 }
 else
 {
-    @* 自分 *@
-    <MudText Typo="Typo.h5" Class="mx-4 mt-8 mb-4">自分のパーティ</MudText>
-    <MudButton Class="mx-4 mb-4" Variant="Variant.Filled" Size="Size.Small" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => HandleClearClicked(Battle.MyParty))">クリア</MudButton>
-    <MudGrid Class="mx-4">
-        @foreach (var (poke, index) in Battle.MyParty.Select((poke, index) => (poke, index)))
-        {
-            <MudItem xs="6">
-                <MudAutocomplete T="string" Label="@($"ポケモン{index + 1}")" Value="@poke.Name" ValueChanged="@( async(value) => await HandlePokeSelected(value, poke))" SearchFunc="@( async(value) => HandlePokeSearchFunc(value))" ResetValueOnEmptyText="true" CoerceText="false" CoerceValue="false" />
-            </MudItem>
-            <MudItem xs="6">
-                <PokeImageView PokeNo="@poke.No" Width="50" Height="50" />
-                <PokeTypeView PokeType="@poke.Type1" ShowSample="@string.IsNullOrEmpty(poke.Name)" SimpleText="true" />
-                <PokeTypeView PokeType="@poke.Type2" ShowSample="@string.IsNullOrEmpty(poke.Name)" SimpleText="true" />
-            </MudItem>
-            <MudItem xs="12">
-                <MudStack Row="true">
-                    <MudRadioGroup T="Common.SpeedRank" SelectedOption="@poke.SpeedRank" SelectedOptionChanged="@(value => HandleSpeedRankChanged(value, poke))">
-                        <MudRadio Option="@(Common.SpeedRank.Fastest)" Dense="true" Color="Color.Primary">最速</MudRadio>
-                        <MudRadio Option="@(Common.SpeedRank.Fast)" Dense="true" Color="Color.Primary">準速</MudRadio>
-                        <MudRadio Option="@(Common.SpeedRank.Default)" Dense="true" Color="Color.Primary">無振</MudRadio>
-                        <MudRadio Option="@(Common.SpeedRank.Default)" Dense="true" Color="Color.Primary">下降</MudRadio>
-                    </MudRadioGroup>
-                    <MudCheckBox T="bool" Checked="@(poke.BattleItem == Common.BattleItem.ChoiceScarf ? true : false)" Label="スカーフ" Color="Color.Warning" Dense="true" CheckedChanged="@(value => HandleScarfChanged(value, poke))"></MudCheckBox>
-                </MudStack>
-            </MudItem>
-        }
-    </MudGrid>
-    @* 相手 *@
-    <MudText Typo="Typo.h5" Class="mx-4 mt-8 mb-4">相手のパーティ</MudText>
-    <MudButton Class="mx-4 mb-4" Variant="Variant.Filled" Size="Size.Small" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => HandleClearClicked(Battle.YourParty))">クリア</MudButton>
-    <MudGrid Class="mx-4">
-        @foreach (var (poke, index) in Battle.YourParty.Select((poke, index) => (poke, index)))
-        {
-            <MudItem xs="6">
-                <MudAutocomplete T="string" Label="@($"ポケモン{index + 1}")" Value="@poke.Name" ValueChanged="@( async(value) => await HandlePokeSelected(value, poke))" SearchFunc="@( async(value) => HandlePokeSearchFunc(value))" ResetValueOnEmptyText="true" CoerceText="false" CoerceValue="false" />
-            </MudItem>
-            <MudItem xs="6">
-                <PokeImageView PokeNo="@poke.No" Width="50" Height="50" />
-                <PokeTypeView PokeType="@poke.Type1" ShowSample="@string.IsNullOrEmpty(poke.Name)" SimpleText="true" />
-                <PokeTypeView PokeType="@poke.Type2" ShowSample="@string.IsNullOrEmpty(poke.Name)" SimpleText="true" />
-            </MudItem>
-        }
+    <MudGrid Class="px-4">
+        @* 自分 *@
+        <MudItem xs="12" sm="6">
+            <MudText Typo="Typo.h5" Class="mx-4 mt-8 mb-4">自分のパーティ</MudText>
+            <MudButton Class="mx-4 mb-4" Variant="Variant.Filled" Size="Size.Small" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => HandleClearClicked(Battle.MyParty))">クリア</MudButton>
+            <MudGrid Class="pl-4">
+                @foreach (var (poke, index) in Battle.MyParty.Select((poke, index) => (poke, index)))
+                {
+                    <MudItem xs="6">
+                        <MudAutocomplete T="string" Label="@($"ポケモン{index + 1}")" Value="@poke.Name" ValueChanged="@( async(value) => await HandlePokeSelected(value, poke))" SearchFunc="@( async(value) => HandlePokeSearchFunc(value))" ResetValueOnEmptyText="true" CoerceText="false" CoerceValue="false" />
+                    </MudItem>
+                    <MudItem xs="6">
+                        <PokeImageView PokeNo="@poke.No" Width="50" Height="50" />
+                        <PokeTypeView PokeType="@poke.Type1" ShowSample="@string.IsNullOrEmpty(poke.Name)" SimpleText="true" />
+                        <PokeTypeView PokeType="@poke.Type2" ShowSample="@string.IsNullOrEmpty(poke.Name)" SimpleText="true" />
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudStack Row="true" Class="pl-1">
+                            <MudRadioGroup T="Common.SpeedRank" SelectedOption="@poke.SpeedRank" SelectedOptionChanged="@(value => HandleSpeedRankChanged(value, poke))">
+                                <MudRadio Option="@(Common.SpeedRank.Fastest)" Dense="true" Color="Color.Primary">最速</MudRadio>
+                                <MudRadio Option="@(Common.SpeedRank.Fast)" Dense="true" Color="Color.Primary">準速</MudRadio>
+                                <MudRadio Option="@(Common.SpeedRank.Default)" Dense="true" Color="Color.Primary">無振</MudRadio>
+                                <MudRadio Option="@(Common.SpeedRank.Default)" Dense="true" Color="Color.Primary">下降</MudRadio>
+                            </MudRadioGroup>
+                            <MudCheckBox T="bool" Checked="@(poke.BattleItem == Common.BattleItem.ChoiceScarf ? true : false)" Label="スカーフ" Color="Color.Warning" Dense="true" CheckedChanged="@(value => HandleScarfChanged(value, poke))"></MudCheckBox>
+                        </MudStack>
+                    </MudItem>
+                }
+            </MudGrid>
+        </MudItem>
+        @* 相手 *@
+        <MudItem xs="12" sm="6">
+            <MudText Typo="Typo.h5" Class="mx-4 mt-8 mb-4">相手のパーティ</MudText>
+            <MudButton Class="mx-4 mb-4" Variant="Variant.Filled" Size="Size.Small" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => HandleClearClicked(Battle.YourParty))">クリア</MudButton>
+            <MudGrid Class="pl-4">
+                @foreach (var (poke, index) in Battle.YourParty.Select((poke, index) => (poke, index)))
+                {
+                    <MudItem xs="6">
+                        <MudAutocomplete T="string" Label="@($"ポケモン{index + 1}")" Value="@poke.Name" ValueChanged="@( async(value) => await HandlePokeSelected(value, poke))" SearchFunc="@( async(value) => HandlePokeSearchFunc(value))" ResetValueOnEmptyText="true" CoerceText="false" CoerceValue="false" />
+                    </MudItem>
+                    <MudItem xs="6">
+                        <PokeImageView PokeNo="@poke.No" Width="50" Height="50" />
+                        <PokeTypeView PokeType="@poke.Type1" ShowSample="@string.IsNullOrEmpty(poke.Name)" SimpleText="true" />
+                        <PokeTypeView PokeType="@poke.Type2" ShowSample="@string.IsNullOrEmpty(poke.Name)" SimpleText="true" />
+                    </MudItem>
+                }
+            </MudGrid>
+        </MudItem>
     </MudGrid>
 }
 
