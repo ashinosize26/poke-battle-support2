@@ -1,36 +1,28 @@
 ﻿<MudTable Items="@elements" Hover="true" Breakpoint="Breakpoint.None" Dense="true" Striped="true" Bordered="true">
-@*    <HeaderContent>
+    <HeaderContent>
         <MudTh></MudTh>
-        @foreach (var pokeInfo in party)
+        @foreach (var poke in Party)
         {
-            <MudTh Style="vertical-align: top;">
-                <MudStack>
-                    <PokeImageView PokeNo="@pokeInfo.No" Width="42" Height="42" />
-                    <PokeTypeView PokeType="@pokeInfo.FirstType" ShowSample="@string.IsNullOrEmpty(pokeInfo.Name)" SimpleText="true" />
-                    <PokeTypeView PokeType="@pokeInfo.SecondType" ShowSample="@string.IsNullOrEmpty(pokeInfo.Name)" SimpleText="true" />
-                </MudStack>
+            <MudTh>
+                <PokeImageView PokeNo="@poke.No" Fluid="true"/>
             </MudTh>
         }
-        <MudTh Style="vertical-align: bottom;">効果抜群</MudTh>
-        <MudTh Style="vertical-align: bottom;">いまひとつ</MudTh>
+        <MudTh>一貫</MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="AttackTypeName">
             <PokeTypeView PokeType="@context.TypeName" SimpleText="true"/>
         </MudTd>
-        @foreach (var (value, index) in party.Select((value, index) => (value, index)))
+        @foreach (var (value, index) in Party.Select((value, index) => (value, index)))
         {
             <MudTd DataLabel="@($"Poke{index}")">
-                <MudText Typo="Typo.body1" Color="@context.Marks[index].MarkColor" Align="Align.Center">@context.Marks[index].MarkText</MudText>
+                <MudText Color="@context.Marks[index].MarkColor" Align="Align.Center">@context.Marks[index].Mark</MudText>
             </MudTd>
         }
-        <MudTd DataLabel="SuperEffective">
-            <MudText Typo="Typo.body1" Color="@(context.SuperEffectiveCount >= 3 ? Color.Secondary : Color.Default)">@context.SuperEffectiveCount</MudText>
+        <MudTd DataLabel="Consistent">
+            <MudText>@(context.Consistent ? "×": "")</MudText>
         </MudTd>
-        <MudTd DataLabel="WeakAgainst">
-            <MudText Typo="Typo.body1" Color="@(context.WeakAgainstCount >= 3 ? Color.Info : Color.Default)">@context.WeakAgainstCount</MudText>
-        </MudTd>
-    </RowTemplate>*@
+    </RowTemplate>
 </MudTable>
 
 @code {
@@ -45,179 +37,41 @@
     /// </summary>
     private List<PartyTypeEffectiveRowModel> elements = new();
 
-    ///// <summary>
-    ///// タイプ耐性
-    ///// </summary>
-    //private List<PokeTypeEffectiveModel> effectiveList = new();
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <returns></returns>
+    protected override void OnInitialized()
+    {
+        // タイプを行、ポケモンを列にするため、各タイプごとにポケモンの耐性を取得して行を作成
+        elements.Clear();
+        for (int typeIndex = 0; typeIndex < Common.TypeNameList.Length; typeIndex++)
+        {
+            PartyTypeEffectiveRowModel row = new();
 
-    ///// <summary>
-    ///// コンストラクタ
-    ///// </summary>
-    ///// <returns></returns>
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    // パーティの各ポケモンの、攻撃を受けたときの耐性を取得
-    //    foreach (var pokeInfo in party)
-    //    {
-    //        PokeTypeEffectiveModel effective;
-    //        if (string.IsNullOrEmpty(pokeInfo.FirstType) && string.IsNullOrEmpty(pokeInfo.SecondType))
-    //        {
-    //            // ポケモンが未指定の場合
-    //            effective = new PokeTypeEffectiveModel();
-    //        }
-    //        else
-    //        {
-    //            // ポケモンが指定済みの場合
-    //            var url = $"api/Poke/{pokeInfo.Name}/TypeEffective";
-    //            effective = await Http.GetFromJsonAsync<PokeTypeEffectiveModel>(url) ?? new ();
-    //        }
-    //        effectiveList.Add(effective);
-    //    };
+            // タイプ名
+            row.TypeName = Common.TypeNameList[typeIndex];
 
-    //    // タイプを行、ポケモンを列にするため、各タイプごとにポケモンの耐性を取得して行を作成
-    //    elements.Clear();
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "ノーマル",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.NormalEffectiveValue)).ToArray(),   // 耐性（倍率）から表示用のマークを取得
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.NormalEffectiveValue > 1), // 耐性（倍率）が1を超えるポケモンを集計（効果抜群）
-    //        WeakAgainstCount = effectiveList.Count(value  => value.NormalEffectiveValue < 1),    // 耐性（倍率）が1を下回るポケモンを集計（いまひとつ、効果なし）
-    //    });
+            // ポケモンごとの耐性
+            for (int pokeIndex = 0; pokeIndex < Party.Length; pokeIndex++)
+            {
+                double effectiveValue = 1;
+                if (!String.IsNullOrEmpty(Party[pokeIndex].Type1))
+                {
+                    effectiveValue *= Common.TypeEffectiveTable[typeIndex, Common.ConvertTypeNameToIndex(Party[pokeIndex].Type1)];
+                }
+                if (!String.IsNullOrEmpty(Party[pokeIndex].Type2))
+                {
+                    effectiveValue *= Common.TypeEffectiveTable[typeIndex, Common.ConvertTypeNameToIndex(Party[pokeIndex].Type2)];
+                }
+                row.Marks[pokeIndex] = Common.GetTypeResistance(effectiveValue);
+            }
 
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "ほのお",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.FireEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.FireEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.FireEffectiveValue < 1),
-    //    });
+            // 一貫
+            row.Consistent = !row.Marks.Any(value => value.EffectiveValue < 1);
 
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "みず",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.WaterEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.WaterEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.WaterEffectiveValue < 1),
-    //    });
-
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "でんき",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.ElectricEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.ElectricEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.ElectricEffectiveValue < 1),
-    //    });
-
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "くさ",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.GrassEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.GrassEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.GrassEffectiveValue < 1),
-    //    });
-
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "こおり",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.IceEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.IceEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.IceEffectiveValue < 1),
-    //    });
-
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "かくとう",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.FightingEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.FightingEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.FightingEffectiveValue < 1),
-    //    });
-
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "どく",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.PoisonEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.PoisonEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.PoisonEffectiveValue < 1),
-    //    });
-
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "じめん",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.GroundEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.GroundEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.GroundEffectiveValue < 1),
-    //    });
-
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "ひこう",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.FlyingEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.FlyingEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.FlyingEffectiveValue < 1),
-    //    });
-
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "エスパー",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.PsychicEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.PsychicEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.PsychicEffectiveValue < 1),
-    //    });
-
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "むし",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.BugEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.BugEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.BugEffectiveValue < 1),
-    //    });
-
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "いわ",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.RockEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.RockEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.RockEffectiveValue < 1),
-    //    });
-
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "ゴースト",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.GhostEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.GhostEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.GhostEffectiveValue < 1),
-    //    });
-
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "ドラゴン",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.DragonEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.DragonEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.DragonEffectiveValue < 1),
-    //    });
-
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "あく",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.DarkEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.DarkEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.DarkEffectiveValue < 1),
-    //    });
-
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "はがね",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.SteelEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.SteelEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.SteelEffectiveValue < 1),
-    //    });
-
-    //    elements.Add(new PartyTypeEffectiveRowModel()
-    //    {
-    //        TypeName = "フェアリー",
-    //        Marks = effectiveList.Select(value  => Common.GetTypeEffectiveMark(value.FairyEffectiveValue)).ToArray(),
-    //        SuperEffectiveCount = effectiveList.Count(value  => value.FairyEffectiveValue > 1),
-    //        WeakAgainstCount = effectiveList.Count(value  => value.FairyEffectiveValue < 1),
-    //    });
-    //}
+            // テーブルに行追加
+            elements.Add(row);
+        }
+    }
 }

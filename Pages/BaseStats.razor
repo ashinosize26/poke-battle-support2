@@ -10,7 +10,7 @@
             @foreach (var poke in Battle.MyParty)
             {
                 <MudItem xs="6">
-                    <PokeBaseStatsView No="@poke.No" H="@poke.H" A="@poke.A" B="@poke.B" C="@poke.C" D="@poke.D" S="@poke.S" BaseStatBarColor="@Color.Info" />
+                    <PokeBaseStatsView Poke="@poke" BaseStatBarColor="@Color.Info" />
                 </MudItem>
             }
         </MudGrid>
@@ -22,7 +22,7 @@
             @foreach (var poke in Battle.YourParty)
             {
                 <MudItem xs="6">
-                    <PokeBaseStatsView No="@poke.No" H="@poke.H" A="@poke.A" B="@poke.B" C="@poke.C" D="@poke.D" S="@poke.S" BaseStatBarColor="@Color.Secondary" />
+                    <PokeBaseStatsView Poke="@poke" BaseStatBarColor="@Color.Secondary" />
                 </MudItem>
             }
         </MudGrid>

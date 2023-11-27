@@ -1,59 +1,45 @@
-﻿<MudPaper Class="px-2 py-2">
+﻿<MudPaper Class="px-2 py-1">
     <MudStack Spacing="0">
-        <PokeImageView PokeNo="@No" Height="42" Width="42" />
+        <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center">
+            <PokeImageView PokeNo="@Poke.No" Height="42" Width="42" />
+            <PokeTypeView PokeType="@Poke.Type1" ShowSample="false" SimpleText="true" />
+            <PokeTypeView PokeType="@Poke.Type2" ShowSample="false" SimpleText="true" />
+        </MudStack>
         <MudStack Row="true" Spacing="2">
             <MudText Typo="Typo.body2">H</MudText>
-            <MudSlider Size="Size.Small" Value="@H" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
-            <MudText Typo="Typo.body2" Align="Align.Right" Style="width: 40px;">@H</MudText>
+            <MudSlider Size="Size.Small" Value="@Poke.H" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
+            <MudText Typo="Typo.body2" Align="Align.Right" Style="width: 40px;">@Poke.H</MudText>
         </MudStack>
         <MudStack Row="true" Spacing="2">
             <MudText Typo="Typo.body2" >A </MudText>
-            <MudSlider Size="Size.Small" Value="@A" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
-            <MudText Typo="Typo.body2" Align="Align.Right" Style="width: 40px;">@A</MudText>
+            <MudSlider Size="Size.Small" Value="@Poke.A" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
+            <MudText Typo="Typo.body2" Align="Align.Right" Style="width: 40px;">@Poke.A</MudText>
         </MudStack>
         <MudStack Row="true" Spacing="2">
             <MudText Typo="Typo.body2" >B </MudText>
-            <MudSlider Size="Size.Small" Value="@B" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
-            <MudText Typo="Typo.body2" Align="Align.Right" Style="width: 40px;">@B</MudText>
+            <MudSlider Size="Size.Small" Value="@Poke.B" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
+            <MudText Typo="Typo.body2" Align="Align.Right" Style="width: 40px;">@Poke.B</MudText>
         </MudStack>
         <MudStack Row="true" Spacing="2">
             <MudText Typo="Typo.body2" >C </MudText>
-            <MudSlider Size="Size.Small" Value="@C" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
-            <MudText Typo="Typo.body2" Align="Align.Right" Style="width: 40px;">@C</MudText>
+            <MudSlider Size="Size.Small" Value="@Poke.C" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
+            <MudText Typo="Typo.body2" Align="Align.Right" Style="width: 40px;">@Poke.C</MudText>
         </MudStack>
         <MudStack Row="true" Spacing="2">
             <MudText Typo="Typo.body2" >D </MudText>
-            <MudSlider Size="Size.Small" Value="@D" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
-            <MudText Typo="Typo.body2" Align="Align.Right" Style="width: 40px;">@D</MudText>
+            <MudSlider Size="Size.Small" Value="@Poke.D" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
+            <MudText Typo="Typo.body2" Align="Align.Right" Style="width: 40px;">@Poke.D</MudText>
         </MudStack>
         <MudStack Row="true" Spacing="2">
             <MudText Typo="Typo.body2" >S </MudText>
-            <MudSlider Size="Size.Small" Value="@S" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
-            <MudText Typo="Typo.body2" Align="Align.Right" Style="width: 40px;">@S</MudText>
+            <MudSlider Size="Size.Small" Value="@Poke.S" Variant="Variant.Filled" Min="1" Max="255" Color="@BaseStatBarColor" />
+            <MudText Typo="Typo.body2" Align="Align.Right" Style="width: 40px;">@Poke.S</MudText>
         </MudStack>
     </MudStack>
 </MudPaper>
 @code{
     [Parameter]
-    public int No { get; set; }
-
-    [Parameter]
-    public int H { get; set; }
-
-    [Parameter]
-    public int A { get; set; }
-
-    [Parameter]
-    public int B { get; set; }
-
-    [Parameter]
-    public int C { get; set; }
-
-    [Parameter]
-    public int D { get; set; }
-
-    [Parameter]
-    public int S { get; set; }
+    public PokeModel Poke { get; set; } = new();
 
     [Parameter]
     public Color BaseStatBarColor { get; set; }

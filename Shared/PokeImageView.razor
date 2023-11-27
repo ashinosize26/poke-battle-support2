@@ -1,6 +1,6 @@
 ﻿@inject HttpClient Http
 
-<MudImage Src="@imageSrc" Alt="Pokemon Image" Height="@Height" Width="@Width" Style="vertical-align: bottom;" />
+<MudImage Src="@imageSrc" Alt="Pokemon Image" Height="@Height" Width="@Width" Style="vertical-align: bottom;" Fluid="@Fluid" />
 
 @code {
     /// <summary>
@@ -14,6 +14,9 @@
 
     [Parameter]
     public int? Width { get; set; }
+
+    [Parameter]
+    public bool Fluid { get; set; } = false;
 
     /// <summary>
     /// 画像

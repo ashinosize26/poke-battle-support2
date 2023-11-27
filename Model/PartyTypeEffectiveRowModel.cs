@@ -1,11 +1,18 @@
 ﻿namespace PokeBattleSupport2.Model;
 public class PartyTypeEffectiveRowModel
 {
+    /// <summary>
+    /// タイプ名
+    /// </summary>
     public string TypeName { get; set; } = string.Empty;
+    
+    /// <summary>
+    /// パーティのポケモンの耐性
+    /// </summary>
+    public TypeResistanceModel[] Marks { get; set; } = new TypeResistanceModel[6] { new(), new(), new(), new(), new(), new() };
 
-    public TypeEffectiveMarkModel[] Marks { get; set; } = new TypeEffectiveMarkModel[6];
-
-    public int SuperEffectiveCount { get; set; }
-
-    public int WeakAgainstCount { get; set; }
+    /// <summary>
+    /// 一貫
+    /// </summary>
+    public bool Consistent { get; set; }
 }
