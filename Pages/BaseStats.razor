@@ -9,7 +9,7 @@
         <MudGrid Class="mx-4">
             @foreach (var poke in Battle.MyParty)
             {
-                <MudItem xs="6">
+                <MudItem xs="6" Class="px-2 py-1">
                     <PokeBaseStatsView Poke="@poke" BaseStatBarColor="@Color.Info" />
                 </MudItem>
             }
@@ -21,7 +21,7 @@
         <MudGrid Class="mx-4">
             @foreach (var poke in Battle.YourParty)
             {
-                <MudItem xs="6">
+                <MudItem xs="6" Class="px-2 py-1">
                     <PokeBaseStatsView Poke="@poke" BaseStatBarColor="@Color.Secondary" />
                 </MudItem>
             }
