@@ -4,65 +4,65 @@
 <PageTitle>S実数値</PageTitle>
 <MudTable Items="@Elements" Hover="true" Breakpoint="Breakpoint.None" Dense="true" Class="mx-4 mt-8" Striped="true">
     <HeaderContent>
-        <MudTh></MudTh>
-        <MudTh>最速</MudTh>
-        <MudTh>準速</MudTh>
-        <MudTh>無振</MudTh>
-        <MudTh>下降</MudTh>
-        <MudTh>最遅</MudTh>
+        <MudTh Class="px-0"></MudTh>
+        <MudTh Class="px-0">最速</MudTh>
+        <MudTh Class="px-0">準速</MudTh>
+        <MudTh Class="px-0">無振</MudTh>
+        <MudTh Class="px-0">下降</MudTh>
+        <MudTh Class="px-0">最遅</MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="PokemonImage">
+        <MudTd DataLabel="PokemonImage" Class="px-0">
             <PokeImageView PokeNo="@context.No" Width="42" Height="42" />
         </MudTd>
-        <MudTd DataLabel="Fastest">
+        <MudTd DataLabel="Fastest" Class="px-2">
             @if (context.SpeedRank == Common.SpeedRank.Fastest)
             {
-                <MudText Typo="Typo.body1"><b>@context.FastestSpeed</b></MudText>
+                <MudText Align="Align.Right"><b>@context.FastestSpeed</b></MudText>
             }
             else
             {
-                <MudText Typo="Typo.body1">@context.FastestSpeed</MudText>
+                <MudText Align="Align.Right">@context.FastestSpeed</MudText>
             }
         </MudTd>
-        <MudTd DataLabel="Fast">
+        <MudTd DataLabel="Fast" Class="px-2">
             @if (context.SpeedRank == Common.SpeedRank.Fast)
             {
-                <MudText Typo="Typo.body1"><b>@context.FastSpeed</b></MudText>
+                <MudText Align="Align.Right"><b>@context.FastSpeed</b></MudText>
             }
             else
             {
-                <MudText Typo="Typo.body1">@context.FastSpeed</MudText>
+                <MudText Align="Align.Right">@context.FastSpeed</MudText>
             }
         </MudTd>
-        <MudTd DataLabel="Default">
+        <MudTd DataLabel="Default" Class="px-2">
             @if (context.SpeedRank == Common.SpeedRank.Default)
             {
-                <MudText Typo="Typo.body1"><b>@context.DefaultSpeed</b></MudText>
+                <MudText Align="Align.Right"><b>@context.DefaultSpeed</b></MudText>
             }
             else
             {
-                <MudText Typo="Typo.body1">@context.DefaultSpeed</MudText>
+                <MudText Align="Align.Right">@context.DefaultSpeed</MudText>
             }
         </MudTd>
-        <MudTd DataLabel="Slow">
+        <MudTd DataLabel="Slow" Class="px-2">
             @if (context.SpeedRank == Common.SpeedRank.Slow)
             {
-                <MudText Typo="Typo.body1"><b>@context.SlowSpeed</b></MudText>
+                <MudText Align="Align.Right"><b>@context.SlowSpeed</b></MudText>
             }
             else
             {
-                <MudText Typo="Typo.body1">@context.SlowSpeed</MudText>
+                <MudText Align="Align.Right">@context.SlowSpeed</MudText>
             }
         </MudTd>
-        <MudTd DataLabel="Slowest">
+        <MudTd DataLabel="Slowest" Class="px-3">
             @if (context.SpeedRank == Common.SpeedRank.Slowest)
             {
-                <MudText Typo="Typo.body1"><b>@context.SlowestSpeed</b></MudText>
+                <MudText Align="Align.Right"><b>@context.SlowestSpeed</b></MudText>
             }
             else
             {
-                <MudText Typo="Typo.body1">@context.SlowestSpeed</MudText>
+                <MudText Align="Align.Right">@context.SlowestSpeed</MudText>
             }
         </MudTd>
     </RowTemplate>
