@@ -4,15 +4,15 @@
 <PageTitle>S実数値</PageTitle>
 <MudTable Items="@Elements" Hover="true" Breakpoint="Breakpoint.None" Dense="true" Class="mx-4 mt-8" Striped="true">
     <HeaderContent>
-        <MudTh Class="px-0"></MudTh>
-        <MudTh Class="px-0">最速</MudTh>
-        <MudTh Class="px-0">準速</MudTh>
-        <MudTh Class="px-0">無振</MudTh>
-        <MudTh Class="px-0">下降</MudTh>
-        <MudTh Class="px-0">最遅</MudTh>
+        <MudTh Class="px-1"></MudTh>
+        <MudTh Class="px-2"><MudText Align="Align.Right" >最速</MudText></MudTh>
+        <MudTh Class="px-2"><MudText Align="Align.Right" >準速</MudText></MudTh>
+        <MudTh Class="px-2"><MudText Align="Align.Right" >無振</MudText></MudTh>
+        <MudTh Class="px-2"><MudText Align="Align.Right" >下降</MudText></MudTh>
+        <MudTh Class="px-2"><MudText Align="Align.Right" >最遅</MudText></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="PokemonImage" Class="px-0">
+        <MudTd DataLabel="PokemonImage" Class="px-1">
             <PokeImageView PokeNo="@context.No" Width="42" Height="42" />
         </MudTd>
         <MudTd DataLabel="Fastest" Class="px-2">

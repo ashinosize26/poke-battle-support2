@@ -1,4 +1,5 @@
-﻿<MudTable Items="@elements" Hover="true" Breakpoint="Breakpoint.None" Dense="true" Striped="true" Bordered="true" >
+﻿<MudText Typo="Typo.body2">@($"{Common.GetTypeResistance(0).Mark}無効 {Common.GetTypeResistance(0.25).Mark}耐性(0.25) {Common.GetTypeResistance(0.5).Mark}耐性(0.5) {Common.GetTypeResistance(2).Mark}弱点(2) {Common.GetTypeResistance(4).Mark}弱点(4)")</MudText>
+<MudTable Items="@elements" Hover="true" Breakpoint="Breakpoint.None" Dense="true" Striped="true" Bordered="true" >
     <HeaderContent>
         <MudTh Class="px-0"></MudTh>
         @foreach (var poke in Party)
@@ -10,16 +11,16 @@
         <MudTh Class="px-1"><MudText Align="Align.Center" >一貫</MudText></MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="AttackTypeName" Class="px-0">
+        <MudTd DataLabel="AttackTypeName" Class="px-0 py-0">
             <PokeTypeView PokeType="@context.TypeName" SimpleText="true"/>
         </MudTd>
         @foreach (var (value, index) in Party.Select((value, index) => (value, index)))
         {
-            <MudTd DataLabel="@($"Poke{index}")" Class="px-1">
+            <MudTd DataLabel="@($"Poke{index}")" Class="px-1 py-0">
                 <MudText Color="@context.Marks[index].MarkColor" Align="Align.Center"><b>@context.Marks[index].Mark</b></MudText>
             </MudTd>
         }
-        <MudTd DataLabel="Consistent" Class="px-1">
+        <MudTd DataLabel="Consistent" Class="px-1 py-0">
             <MudText Align="Align.Center"><b>@(context.Consistent ? "×" : "")</b></MudText>
         </MudTd>
     </RowTemplate>
